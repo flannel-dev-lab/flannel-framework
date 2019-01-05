@@ -5,6 +5,9 @@ The Flannel Core Framework has been an internal project for years being primaril
 
 *Please note - we are currently in the process of making this a public framework, so please bear with us over the next few weeks as we pull everything together.*
 
+## Quick Setup
+After downloading the framework, enter the conf directory and copy conf.php.template to conf.php, then edit the file to point to one of the configuration files. This is to support any number of configurations. Typically, we copy the dev directory to the local username and poing conf.php to it. After that, edit the conf file inside to match your settings. You should be all set to go at that point.
+
 ## Keeping your codebase updated
 1. <code>git remote add flannel git@github.com:flannel-dev-lab/flannel-framework.git</code>
 2. <code>git fetch flannel</code>
