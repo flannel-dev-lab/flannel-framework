@@ -2,6 +2,7 @@
 
 \Flannel\Core\Config::set([
     'env' => [
+        'mode' => 'website', // Options: website, api
         'base_url' => null,
         'developer_mode' => false,
         'https' => ['enforce'=>false, 'hsts_maxage'=>SECONDS_PER_DAY*30],
