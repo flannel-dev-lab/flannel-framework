@@ -1,8 +1,8 @@
 <?php
 
-namespace Flannel\Controller;
+namespace Flannel\Core\Controller;
 
-\Flannel\Config::required(['env.https.hsts_maxage', 'env.base_url', 'Flannel.api.username', 'Flannel.api.password']);
+\Flannel\Core\Config::required(['env.https.hsts_maxage', 'env.base_url', 'api.username', 'api.password']);
 
 /**
  * Public methods names essentially match the HTTP request method (with the exception of "index"):
@@ -13,7 +13,7 @@ namespace Flannel\Controller;
  *   put:    Update an item
  *   delete: Delete an item
  */
-class Api extends \Flannel\Controller {
+class Api extends \Flannel\Core\Controller {
     
     /**
      * @var mixed[]
@@ -34,37 +34,19 @@ class Api extends \Flannel\Controller {
      */
     public function __construct() {
         header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-        // ensure only accessed from 'env.base_urls'
-        $applications = array('app', 'admin', 'loyalty', 'merchant', 'pos');
-        $match = false;
-        foreach ($applications as $app) {
-            $url = \Flannel\Config::get("env.base_urls.$app");
-            $host = \Flannel\Router::getRequestedHost();
-
-            if(strpos($host, $url) !== 0) {
-                $match = true;
-                break;
-            }
-        }
-
-        if (!$match) {
-            $this->forbidden();
-        }
 
         // enforce HTTPS
-        if(\Flannel\Config::get('env.https.enforce')) {
-            header('Strict-Transport-Security: max-age=' . (int)\Flannel\Config::get('env.https.hsts_maxage'));
+        if(\Flannel\Core\Config::get('env.https.enforce')) {
+            header('Strict-Transport-Security: max-age=' . (int)\Flannel\Core\Config::get('env.https.hsts_maxage'));
             if(!IS_HTTPS) {
                 $this->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
             }
         }
 
-        /*
-        if(\Flannel\Input::server('PHP_AUTH_USER') != \Flannel\Config::get('Flannel.api.username')
-            || \Flannel\Input::server('PHP_AUTH_PW') != \Flannel\Config::get('Flannel.api.password')) {
+        if(\Flannel\Core\Input::server('PHP_AUTH_USER') != \Flannel\Core\Config::get('api.username')
+            || \Flannel\Core\Input::server('PHP_AUTH_PW') != \Flannel\Core\Config::get('api.password')) {
             $this->unauthorized();
         }
-        */
 
         parent::__construct();
     }
@@ -97,7 +79,7 @@ class Api extends \Flannel\Controller {
     }
 
     /**
-     * @param \Flannel\Object[] $collection
+     * @param \Flannel\Core\BaseObject[] $collection
      */
     protected function _sendCollection($collection) {
         $data = [];
@@ -131,7 +113,7 @@ class Api extends \Flannel\Controller {
      * Extended this method to standardize the output.
      * Even if the underlying data model changes, output should remain the same
      *
-     * @param \Flannel\Object $item
+     * @param \Flannel\Core\BaseObject $item
      * @return mixed[]
      */
     protected function _translate($item) {

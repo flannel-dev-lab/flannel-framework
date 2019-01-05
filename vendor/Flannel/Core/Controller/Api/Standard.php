@@ -1,8 +1,8 @@
 <?php
 
-namespace Flannel\Controller\Api;
+namespace Flannel\Core\Controller\Api;
 
-abstract class Standard extends \Flannel\Controller\Api {
+abstract class Standard extends \Flannel\Core\Controller\Api {
 
     /**
      * Required to extend
@@ -50,12 +50,12 @@ abstract class Standard extends \Flannel\Controller\Api {
     ];
 
     /**
-     * @var \Flannel\Object|null
+     * @var \Flannel\Core\BaseObject|null
      */
     protected $_resource = null;
 
     /**
-     * @var \Flannel\Object|null
+     * @var \Flannel\Core\BaseObject|null
      */
     protected $_subresource = null;
 
@@ -131,7 +131,7 @@ abstract class Standard extends \Flannel\Controller\Api {
      */
     protected function _initResource($method) {
         if($this->_subresourceName || ($this->_resourceName && in_array($method, ['get','put','delete']))) {
-            $this->_resource = (new $this->_resourceName())->load(\Flannel\Input::get('resourceId'));
+            $this->_resource = (new $this->_resourceName())->load(\Flannel\Core\Input::get('resourceId'));
             if(!$this->_resource->getId()) {
                 $this->_addError(1, true);
             }
@@ -144,7 +144,7 @@ abstract class Standard extends \Flannel\Controller\Api {
      */
     protected function _initSubresource($method) {
         if($this->_subresourceName && in_array($method, ['get','put','delete'])) {
-            $this->_subresource = (new $this->_subresourceName())->load(\Flannel\Input::get('subresourceId'));
+            $this->_subresource = (new $this->_subresourceName())->load(\Flannel\Core\Input::get('subresourceId'));
             if(!$this->_subresource->getId() || $this->_subresource->getData($this->_subresourceParentFieldName) != $this->_resource->getId()) {
                 $this->_addError(2, true);
             }
@@ -153,7 +153,7 @@ abstract class Standard extends \Flannel\Controller\Api {
     }
 
     /**
-     * @param \Flannel\Object $item
+     * @param \Flannel\Core\BaseObject $item
      * @return mixed[]
      */
     protected function _translate($item) {
