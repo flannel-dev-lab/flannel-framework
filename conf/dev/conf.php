@@ -5,6 +5,7 @@
         'base_urls' => [
             'app' => 'framework.flanneldevlab.com',
         ],
+        'mode' => 'api', // Options: website, api
         'developer_mode' => true,
         'error' => [
             'display'   => true, 
@@ -40,10 +41,10 @@
             'support'   => '',
             'sales'     => ''
         ],
-        'api' => [
-            'username' => '',
-            'password' => ''
-        ],
+    ],
+    'api' => [
+        'username' => 'changeme',
+        'password' => 'changeme'
     ],
     'cache' => [
         'handler'   => 'Redis',

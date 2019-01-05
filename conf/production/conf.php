@@ -5,6 +5,7 @@
         'base_urls' => [
             'app' => '',
         ],
+        'mode' => 'website', // Options: website, api
         'developer_mode' => false,
         'error' => [
             'display'   => true, 
