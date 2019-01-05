@@ -1,0 +1,3 @@
+<?php
+
+require_once 'YOUR_USERNAME/conf.php';
