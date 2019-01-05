@@ -23,7 +23,11 @@ class Router {
         static::$_defaultControllerName = $defaultControllerName;
         
 	try {
-            new Router\Standard(static::getRequestedPath());
+            if (\Flannel\Core\Config::get('env.mode') == 'api') {
+                new Router\Api(static::getRequestedPath());
+            } else {
+                new Router\Standard(static::getRequestedPath());
+            }
         } catch(Exception $e) {
             \Flannel\Core\Monolog::get()->error($e->getMessage());
             static::getDefaultController()->serviceUnavailable();
@@ -34,7 +38,7 @@ class Router {
      * @return string
      */
     public static function getRequestedUrl() {
-        return \Flannel\Core\Input::server('REQUEST_SCHEME', FILTER_SANITIZE_URL, null)
+        return \Flannel\Core\Input::server('REQUEST_SCHEME', FILTER_SANITIZE_URL, null) . '://'
             . \Flannel\Core\Input::server('HTTP_HOST', FILTER_SANITIZE_URL, null)
             . \Flannel\Core\Input::server('REQUEST_URI', FILTER_SANITIZE_URL, null);
     }
@@ -46,6 +50,7 @@ class Router {
      * @return string
      */
     public static function getRequestedHost() {
+        $url = static::getRequestedUrl();
         return parse_url(static::getRequestedUrl(), PHP_URL_HOST);
     }
 
@@ -57,19 +62,6 @@ class Router {
      */
     public static function getRequestedPath() {
         return parse_url(static::getRequestedUrl(), PHP_URL_PATH);
-    }
-
-    /**
-     * Get the requested service
-     * Eg, admin
-     *
-     * @return string
-     */
-    public static function getRequestedService() {
-        
-	    $position = \Flannel\Core\Config::get('env.developer_mode') ? 2 : 1;
-   
-        return explode('.', static::getRequestedHost())[$position];
     }
 
     /**
