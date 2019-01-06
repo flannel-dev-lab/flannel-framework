@@ -60,3 +60,12 @@
     ],
     'jwt.key' => null
 ]);
+
+// TODO - 100% the wrong place for this
+function keyLengthSort($a, $b) {
+    if (strlen($a) >= strlen($b)) {
+        return false;
+    }
+
+    return true;
+}
