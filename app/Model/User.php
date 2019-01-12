@@ -65,7 +65,7 @@ class Model_User extends \FlannelCore\Db\Row {
     * @param string $password
     * @return string
     */
-    public static function createHash($value) {
+    public static function createPasswordHash($value) {
         return password_hash($value, self::PW_HASH_ALGO, array('cost'=>self::PW_HASH_COST));
     }
 
