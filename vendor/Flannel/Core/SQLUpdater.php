@@ -22,6 +22,7 @@ class SQLUpdater {
 
         $updates = array();
         $rootDirectories = [
+            '/vendor/Flannel/Core'
             '/vendor/Flannel/*',
         ];
 
