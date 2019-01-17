@@ -26,10 +26,10 @@ class SQLUpdater {
             '/vendor/Flannel/*',
         ];
 
-        $fileSearch = '/sql/*.php';
-
         $files = [];
-
+        
+        // Find table queries
+        $fileSearch = '/sql/*.php';
         foreach ($rootDirectories as $directory) {
             foreach (glob(ROOT_DIR . $directory, GLOB_ONLYDIR) as $childDirectory) {
                 foreach (glob($childDirectory . $fileSearch) as $filename) {
@@ -38,9 +38,19 @@ class SQLUpdater {
             }
         }
 
-        // TODO - Move these files into models
+        // TODO - Add user files
         foreach (glob(ROOT_DIR . '/sql/*.php') as $filename) {
             $files[] = $filename;
+        }
+
+        // Find any data files
+        $fileSearch = '/data/*.php';
+        foreach ($rootDirectories as $directory) {
+            foreach (glob(ROOT_DIR . $directory, GLOB_ONLYDIR) as $childDirectory) {
+                foreach (glob($childDirectory . $fileSearch) as $filename) {
+                    $files[] = $filename;
+                }
+            }
         }
 
         // Loop over all found sql files and check if they should be run
