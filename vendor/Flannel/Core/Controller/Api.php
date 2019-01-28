@@ -18,11 +18,7 @@ class Api extends \Flannel\Core\Controller {
     /**
      * @var mixed[]
      */
-    protected $_payload = [
-        'success' => true,
-        'errors' => [],
-        'result' => null
-    ];
+    protected $_payload = [];
 
     /**
      * @var string[]
@@ -43,12 +39,52 @@ class Api extends \Flannel\Core\Controller {
             }
         }
 
-        if(\Flannel\Core\Input::server('PHP_AUTH_USER') != \Flannel\Core\Config::get('api.username')
-            || \Flannel\Core\Input::server('PHP_AUTH_PW') != \Flannel\Core\Config::get('api.password')) {
-            $this->unauthorized();
-        }
+        $this->_authenticate();
 
         parent::__construct();
+    }
+
+    public function _authenticate() {
+        // Allow open APIs through
+        if ($this->_isPublic) {
+            return;
+        }
+
+        if ($accessToken = \Flannel\Core\Input::server('HTTP_ACCESS_TOKEN')) {
+            try {
+                $data = \Flannel\Core\JWT::decode($accessToken);
+                $user = (new \Model_User())->load($data->id, 'uuid');
+
+                // If the access key doesn't match, block the user
+                if ($data->ak != $user->getAccessKey()) {
+                    $this->unauthorized();
+                }
+
+                // Block access if the status isn't enabled
+                if ($user->getStatus() != \Model_User::STATUS_ENABLED) {
+                    $this->unauthorized();
+                }
+
+                // Block access if the failed login attempts are too high
+                if ($user->getFailedLoginAttempts() >= 6) {
+                    $this->unauthorized();
+                }
+
+                // All checks have passed, let the user in
+                $this->_user = $user;
+
+                // Add the access token to the header
+                header("Access-Token: $accessToken");
+
+                // Force the return
+                return true;
+            } catch (Exception $e) {
+                $this->unauthorized();
+            }
+        }
+
+        // Default to block access
+        $this->unauthorized();
     }
 
     /**
@@ -64,17 +100,26 @@ class Api extends \Flannel\Core\Controller {
      * @param int $errCode
      */
     protected function _send() {
-        if(!$this->_payload['success']) {
-            header('HTTP/1.1 422 Unprocessable Entity');
-        }
         $this->outputJson($this->_payload);
     }
 
     /**
      * @param mixed $item
      */
+    protected function _sendError($code, $devMessage = '', $moreInfo = '') {
+        header('HTTP/1.1 422 Unprocessable Entity');
+        $this->outputJson([
+            'code'          => $code,
+            'dev_message'   => $devMessage,
+            'more_info'     => $moreInfo,
+        ]);
+    }
+
+    /**
+     * @param mixed $item
+     */
     protected function _sendItem($item) {
-        $this->_payload['result'] = $this->_translate($item);
+        $this->_payload = $this->_translate($item);
         $this->_send();
     }
 
@@ -87,26 +132,9 @@ class Api extends \Flannel\Core\Controller {
             $data[] = $this->_translate($item);
         }
 
-        $this->_payload['result'] = [
-            'count' => count($data),
-            'items' => $data
-        ];
+        $this->_payload = $data;
+        
         $this->_send();
-    }
-
-    /**
-     * @param int $code
-     * @param bool $send
-     */
-    protected function _addError($code, $send=false) {
-        $this->_payload['success'] = false;
-        $this->_payload['errors'][] = [
-            'code' => (int)$code,
-            'message' => $this->_errors[$code] ?? 'Unknown error'
-        ];
-        if($send) {
-            $this->_send();
-        }
     }
 
     /**

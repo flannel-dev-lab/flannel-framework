@@ -3,6 +3,13 @@
 namespace Flannel\Core\Controller\Api;
 
 abstract class Standard extends \Flannel\Core\Controller\Api {
+    
+    /**
+     * Optional to extend
+     *
+     * @var boolean
+     */
+    protected $_isPublic = false;
 
     /**
      * Required to extend
