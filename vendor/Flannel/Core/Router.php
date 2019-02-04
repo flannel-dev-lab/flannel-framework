@@ -38,7 +38,7 @@ class Router {
      * @return string
      */
     public static function getRequestedUrl() {
-        return \Flannel\Core\Input::server('REQUEST_SCHEME', FILTER_SANITIZE_URL, null) . '://'
+        return (\Flannel\Core\Input::server('HTTPS', FILTER_SANITIZE_URL, null) ? 'https' : 'http') . '://'
             . \Flannel\Core\Input::server('HTTP_HOST', FILTER_SANITIZE_URL, null)
             . \Flannel\Core\Input::server('REQUEST_URI', FILTER_SANITIZE_URL, null);
     }
