@@ -57,8 +57,21 @@ class BaseObject implements \ArrayAccess {
      */
     public function initData($data) {
         $this->_origData = $data;
-        $this->_data = $data;
+        $this->_data = $this->_hydrate($data);
         return $this;
+    }
+
+    protected function _hydrate($data) {
+        if ((!is_object($data) && !is_array($data)) || empty($data)) {
+            return $data;
+        }
+        
+        $object = new static();
+        foreach ($data as $key => $item) {
+            $object->addData([$key => $item]);
+        }
+        
+        return $object;
     }
 
     /**
@@ -91,7 +104,7 @@ class BaseObject implements \ArrayAccess {
      */
     public function addData($data) {
         foreach($data as $key=>$val) {
-            $this->setData($key, $val);
+            $this->setData($key, $this->_hydrate($val));
         }
         return $this;
     }
