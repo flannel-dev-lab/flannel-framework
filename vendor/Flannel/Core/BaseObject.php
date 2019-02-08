@@ -10,6 +10,11 @@ class BaseObject implements \ArrayAccess {
     private $_data = [];
 
     /**
+     * @var mixed[]
+     */
+    private $_objects = [];
+
+    /**
     * @var mixed[]
     */
     protected $_origData;
@@ -56,8 +61,21 @@ class BaseObject implements \ArrayAccess {
      * @return self
      */
     public function initData($data) {
-        $this->_origData = $data;
-        $this->_data = $this->_hydrate($data);
+        if (empty($data)) {
+            $this->_origData = [];
+            $this->_data = [];
+        }
+
+        foreach ($data as $key => $val) {
+            if (!is_object($val) && !is_array($val)) {
+                $this->_origData[$key] = $val;
+                $this->_data[$key] = $val;
+                continue;
+            }
+
+            $this->_objects[$key] = $this->_hydrate($val);
+        }
+
         return $this;
     }
 
@@ -104,7 +122,12 @@ class BaseObject implements \ArrayAccess {
      */
     public function addData($data) {
         foreach($data as $key=>$val) {
-            $this->setData($key, $this->_hydrate($val));
+            if (!is_object($val) && !is_array($val)) {
+                $this->setData($key, $val);
+                continue;
+            }
+
+            $this->_objects[$key] = $this->_hydrate($val);
         }
         return $this;
     }
@@ -141,7 +164,11 @@ class BaseObject implements \ArrayAccess {
      * @return mixed
      */
     public function getData($key) {
-        return $this->_data[$key] ?? null;
+        if (!empty($this->_data[$key])) {
+            return $this->_data[$key];
+        }
+
+        return $this->_objects[$key] ?? null;
     }
 
     /**
