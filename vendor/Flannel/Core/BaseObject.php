@@ -64,6 +64,7 @@ class BaseObject implements \ArrayAccess {
         if (empty($data)) {
             $this->_origData = [];
             $this->_data = [];
+            return $this;
         }
 
         foreach ($data as $key => $val) {
