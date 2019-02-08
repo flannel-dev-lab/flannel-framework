@@ -7,6 +7,10 @@
  * @author   Derek Sanford <derek@flanneldevlab.com>
  */
 
+if (!defined('INTERNAL_SCRIPT')) {
+    define('INTERNAL_SCRIPT', true);
+}
+
 define('ROOT_DIR', dirname(__FILE__));
 
 require_once ROOT_DIR . '/env.php';
@@ -35,12 +39,7 @@ Flannel\Core\ErrorHandler::init();
 set_error_handler(['\\Flannel\\Core\\ErrorHandler', 'log']);
 register_shutdown_function(['\\Flannel\\Core\\ErrorHandler', 'shutdown']);
 
-// Load sentry.io if enabled
-if (\Flannel\Core\Config::get('sentry.enabled')) {
-    $client = new Raven_Client(\Flannel\Core\Config::get('sentry.url'));
-    $client->setEnvironment(\Flannel\Core\Config::get('sentry.environment'));
-    $error_handler = new Raven_ErrorHandler($client);
-    $error_handler->registerExceptionHandler();
-    $error_handler->registerErrorHandler();
-    $error_handler->registerShutdownFunction();
+// Load additional bootstrap files
+foreach (glob(ROOT_DIR . '/bootstrap/*.php') as $filename) {
+    require_once($filename);
 }
