@@ -10,11 +10,6 @@ class BaseObject implements \ArrayAccess {
     private $_data = [];
 
     /**
-     * @var mixed[]
-     */
-    private $_objects = [];
-
-    /**
     * @var mixed[]
     */
     protected $_origData;
@@ -60,37 +55,13 @@ class BaseObject implements \ArrayAccess {
      * @param mixed $data
      * @return self
      */
-    public function initData($data) {
-        if (empty($data)) {
-            $this->_origData = [];
-            $this->_data = [];
-            return $this;
-        }
-
+    public function initData($data = []) {
         foreach ($data as $key => $val) {
-            if (!is_object($val) && !is_array($val)) {
-                $this->_origData[$key] = $val;
-                $this->_data[$key] = $val;
-                continue;
-            }
-
-            $this->_objects[$key] = $this->_hydrate($val);
+            $this->_origData[$key] = $val;
+            $this->setData($key, $val);
         }
 
         return $this;
-    }
-
-    protected function _hydrate($data) {
-        if ((!is_object($data) && !is_array($data)) || empty($data)) {
-            return $data;
-        }
-        
-        $object = new static();
-        foreach ($data as $key => $item) {
-            $object->addData([$key => $item]);
-        }
-        
-        return $object;
     }
 
     /**
@@ -123,12 +94,7 @@ class BaseObject implements \ArrayAccess {
      */
     public function addData($data) {
         foreach($data as $key=>$val) {
-            if (!is_object($val) && !is_array($val)) {
-                $this->setData($key, $val);
-                continue;
-            }
-
-            $this->_objects[$key] = $this->_hydrate($val);
+            $this->setData($key, $val);
         }
         return $this;
     }
@@ -165,11 +131,11 @@ class BaseObject implements \ArrayAccess {
      * @return mixed
      */
     public function getData($key) {
-        if (!empty($this->_data[$key])) {
-            return $this->_data[$key];
+        if (!empty($this->_data[$key]) && (is_array($this->_data[$key]) || is_object($this->_data[$key]))) {
+            return new \Flannel\Core\BaseObject($this->_data[$key]);
         }
 
-        return $this->_objects[$key] ?? null;
+        return $this->_data[$key] ?? null;
     }
 
     /**
