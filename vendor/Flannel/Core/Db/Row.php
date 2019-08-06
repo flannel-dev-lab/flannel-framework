@@ -60,7 +60,8 @@ abstract class Row extends \Flannel\Core\BaseObject {
                 $id = $this->_dbTable->insertRow($this->getAllData());
                 $this->setId($id);
             } else {
-                $this->_dbTable->updateRow($this->getId(), $this->getChangedData());
+				if(!empty($this->getChangedData()))
+					$this->_dbTable->updateRow($this->getId(), $this->getChangedData());
             }
             $data = $this->_dbTable->getRow($this->getId());
             $this->addData($data);
