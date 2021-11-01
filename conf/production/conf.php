@@ -35,17 +35,6 @@
             'debug'     => false
         ],
     ],
-    'contact' => [
-        'email' => [
-            'from'      => '',
-            'support'   => '',
-            'sales'     => ''
-        ],
-        'api' => [
-            'username' => '',
-            'password' => ''
-        ],
-    ],
     'cache' => [
         'handler'   => 'Redis',
         'savepath'  => 'tcp://127.0.0.1:6379'
@@ -54,29 +43,5 @@
         'handler'   => 'redis',
         'savepath'  => 'tcp://127.0.0.1:6379'
     ],
-    'alerts' => [
-        'file'  => true,
-        'email' => null,
-        'slack' => '',
-    ],
-    'sparkpost.api' => [
-        'key' => ''
-    ],
-    'mailchimp.api' => [
-        'key' => ''
-    ],
     'jwt.key' => '',
-    'twilio' => [
-        'sid'       => '',
-        'token'     => '',
-        'number'    => '',
-    ],
-    'postman' => [
-        'enabled' => true,
-    ],
-    'sentry' => [
-        'enabled'     => false,
-        'url'         => '',
-        'environment' => 'production',
-    ],
 ]);

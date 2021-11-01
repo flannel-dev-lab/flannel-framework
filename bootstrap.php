@@ -18,11 +18,14 @@ require_once ROOT_DIR . '/env.php';
 /**
  * Autoloaders
  */
+
+// Include Composer first
+require_once ROOT_DIR . '/vendor/autoload.php';
+
+// Include Flannel resources
 require_once ROOT_DIR . '/vendor/Flannel/Core/Autoloader.php';
 \Flannel\Core\Autoloader::register();
 \Flannel\Core\Autoloader::addPath(ROOT_DIR.'/app');
-\Flannel\Core\Autoloader::addPath(ROOT_DIR.'/vendor');
-\Flannel\Core\Autoloader::addPath(ROOT_DIR.'/vendor/Flannel/Core/Autoload');
 
 /**
  * Configurations
