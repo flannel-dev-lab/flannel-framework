@@ -5,7 +5,7 @@
         'base_urls' => [
             'app' => 'framework.flanneldevlab.com',
         ],
-        'mode' => 'api', // Options: website, api
+        'mode' => 'website', // Options: website, api
         'developer_mode' => true,
         'error' => [
             'display'   => true, 
