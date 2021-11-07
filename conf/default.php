@@ -6,7 +6,8 @@
         'base_url' => null,
         'developer_mode' => false,
         'https' => ['enforce'=>false, 'hsts_maxage'=>SECONDS_PER_DAY*30],
-        'error' => ['display'=>false, 'reporting'=>E_ALL]
+        'error' => ['display'=>false, 'reporting'=>E_ALL],
+        'version' => '2.2.1',
     ],
     'db' => [
         'app' => ['host'=>null, 'dbname'=>null, 'user'=>null, 'password'=>null, 'debug'=>false],
