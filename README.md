@@ -27,3 +27,6 @@ All web requests (aside from existing files, like images or css) route through w
 
 ## Using Models
 Each Model is named according to the database table name. For example, a table called `user` would have a corresponding model found at /app/Model/User.php. To use the model, call `$user = (new Model_User())->load($id)`. The load method also takes an array of key/value pairs which are added to the where clause.
+
+## Credits
+Admin UI: https://github.com/ColorlibHQ/AdminLTE/releases/tag/v3.1.0
