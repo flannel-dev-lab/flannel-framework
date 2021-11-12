@@ -1,5 +1,8 @@
 <?php
 
+// For the installation script
+define("_IS_INSTALLED", false);
+
 define('DS', DIRECTORY_SEPARATOR);
 define('IS_CLI', strtolower(php_sapi_name())==='cli');
 define('IS_WINDOWS', strtolower(substr(PHP_OS, 0, 3))==='win');
