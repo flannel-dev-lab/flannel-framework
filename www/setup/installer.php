@@ -115,7 +115,5 @@ if (!file_put_contents("../../conf/" . $_POST['config_name'] . "/conf.php", "<?p
     die();
 }
 
-//unlink("install.php");
-
 header("Location: config_setup.php");
 die();
