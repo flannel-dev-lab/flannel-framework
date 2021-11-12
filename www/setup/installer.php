@@ -1,5 +1,12 @@
 <?php
 
+define('ROOT_DIR', dirname(__FILE__) . "/../..");
+
+require_once ROOT_DIR . '/env.php';
+
+// Include Composer first
+require_once ROOT_DIR . '/vendor/autoload.php';
+
 $config = [
     'env' => [
         'base_urls' => [
@@ -42,7 +49,7 @@ $config = [
     ],
 ];
 
-$mysqli = new mysqli($config['db']['app']['host'], $config['db']['app']['user'], $config['db']['app']['password'], $config['db']['app']['dname']);
+$mysqli = new \mysqli($config['db']['app']['host'], $config['db']['app']['user'], $config['db']['app']['password'], $config['db']['app']['dname']);
 // Check connection
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: " . $mysqli->connect_error;
@@ -53,7 +60,7 @@ $mysqli->close();
 $cacheStoreSuccess = true;
 switch ($_POST['caching_type']) {
     case "file":
-        if ($Handle = fopen($_POST['caching_save_path'], 'w')) {
+        if ($Handle = fopen("../.." . $_POST['caching_save_path'], 'w')) {
             if (!fwrite($Handle, "testing file write access by the installer script.")) {
                 $cacheStoreSuccess = false;
             }
@@ -84,6 +91,19 @@ if (!$cacheStoreSuccess) {
     die();
 }
 
+$avidBaseClient = new \AvidBase\Client($_POST['admin_account_id'], $_POST['admin_api_key'], false);
+$users = $avidBaseClient->FindUser($_POST['admin_email']);
+if (empty($users)) {
+    $user = new \AvidBase\User();
+    $user->Email = $_POST['admin_email'];
+    $user->Password = $_POST['admin_password'];
+    $response = $avidBaseClient->CreateUser($user);
+    if (!$response) {
+        echo "Failed to establish AvidBase connection and create an admin user.";
+        die();
+    }
+}
+
 $configString = var_export($config, true);
 $configString = str_replace("array (", "[", $configString);
 $configString = str_replace(")", "]", $configString);
@@ -94,6 +114,8 @@ if (!file_put_contents("../../conf/" . $_POST['config_name'] . "/conf.php", "<?p
     echo "Failed to write to a config file.";
     die();
 }
+
+//unlink("install.php");
 
 header("Location: config_setup.php");
 die();

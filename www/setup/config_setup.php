@@ -1,4 +1,17 @@
 <?php
+
+define('ROOT_DIR', dirname(__FILE__) . "/../..");
+
+require_once ROOT_DIR . '/env.php';
+
+// Include Composer first
+require_once ROOT_DIR . '/vendor/autoload.php';
+
+if (_IS_INSTALLED) {
+    header("Location: /admin/auth/login");
+    die();
+}
+
 $configDirectories = array_diff(scandir("../../conf"), array('..', '.', '.gitignore', 'conf.php.template', 'default.php', 'conf.php'));
 ?>
 <!DOCTYPE html>

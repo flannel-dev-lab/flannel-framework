@@ -1,0 +1,23 @@
+{
+  "name": "avidbase/auth",
+  "description": "Provides access to authentication and user service provided by AvidBase",
+  "type": "library",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "AvidBase",
+      "email": "hello@avidbase.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "guzzlehttp/guzzle": "^6.0.2",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "AvidBase\\": "src/"
+    }
+  }
+}
