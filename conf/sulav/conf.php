@@ -1,50 +1,50 @@
 <?php \Flannel\Core\Config::set([
-  'env' => 
+  'env' =>
   [
-    'base_urls' => 
+    'base_urls' =>
     [
       'app' => 'http://localhost:5001',
     ],
     'mode' => 'website',
     'developer_mode' => false,
-    'error' => 
+    'error' =>
     [
       'display' => true,
       'reporting' => 32767,
     ],
   ],
-  'db' => 
+  'db' =>
   [
-    'app' => 
+    'app' =>
     [
-      'host' => 'localhost',
+      'host' => 'docker.for.mac.host.internal',
       'dbname' => 'sulav',
       'user' => 'root',
-      'password' => '',
+      'password' => 'hello123',
       'debug' => false,
     ],
   ],
-  'cache' => 
+  'cache' =>
   [
-    'handler' => 'file',
-    'savepath' => '/temp/logs/default.log',
+    'handler' => 'redis',
+    'savepath' => 'tcp://host.docker.internal:6379',
   ],
-  'session' => 
+  'session' =>
   [
-    'handler' => 'file',
-    'savepath' => '/temp/logs/default.log',
+    'handler' => 'redis',
+    'savepath' => 'tcp://host.docker.internal:6379',
   ],
-  'sentry' => 
+  'sentry' =>
   [
     'enabled' => false,
     'url' => '',
     'environment' => '',
   ],
   'jwt.key' => '',
-  'avidbase' => 
+  'avidbase' =>
   [
     'account_id' => '3d40e9a9-2832-4802-a351-290220da4b5a',
     'api_key' => 'JY9t1FadgBZz5avY0SYAIPci8fwIkNpNAkWbzK4shJAALI5MrrTEN7dbSfwej5Mt',
-    'is_production' => true,
+    'is_production' => false,
   ],
 ]);
