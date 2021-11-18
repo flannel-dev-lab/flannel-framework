@@ -1,1 +1,7 @@
-.install-box { width: 960px; }
+.install-box {
+    width: 960px;
+}
+
+textarea.locked {
+    resize: none;
+}

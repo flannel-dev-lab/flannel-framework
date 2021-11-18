@@ -1,0 +1,76 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Posts</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                        <li class="breadcrumb-item active">Posts</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <p><a href="/admin/post/create" class="btn btn-sm btn-primary">Create Post</a></p>
+                    <table class="table table-striped dataTable" style="width:100%">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Title</th>
+                            <th>Created At</th>
+                            <th>Status</th>
+                            <th>Version</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($posts as $index => $post): ?>
+                            <?php if ($post->getStatus() != Model_Post::STATUS_UPDATED): ?>
+                                <tr>
+                                    <td><?php echo $post->getTitle(); ?></td>
+                                    <td><?php echo date("m/d/Y g:i A", strtotime($post->getCreatedAt())); ?></td>
+                                    <td>
+                                        <?php
+                                        switch ($post->getStatus()) {
+                                            case Model_Post::STATUS_DISABLED:
+                                                echo "Disabled";
+                                                break;
+                                            case Model_Post::STATUS_PUBLISHED:
+                                                echo "Published";
+                                                break;
+                                            case Model_Post::STATUS_DRAFT:
+                                                echo "Draft";
+                                                break;
+                                            default:
+                                                echo "Unknown";
+                                                break;
+                                        }
+                                        ?>
+                                    </td>
+                                    <td><?php echo $post->getVersion(); ?></td>
+                                    <td><a href="/admin/post/edit/id/<?php echo $post->getUuid(); ?>">Edit</a></td>
+                                </tr>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

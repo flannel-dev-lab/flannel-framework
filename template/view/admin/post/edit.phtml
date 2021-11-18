@@ -1,0 +1,85 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Edit Post</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/post">Posts</a></li>
+                        <li class="breadcrumb-item active">Edit Post</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/admin/post/update" method="post">
+                        <input type="hidden" name="post_id" value="<?php echo $post->getUuid(); ?>">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title"
+                                   value="<?php echo $post->getTitle(); ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea id="htmlEditor"><?php echo $post->getHtml(); ?></textarea>
+                            <input type="hidden" id="html" name="html" value='<?php echo $post->getHtml(); ?>'>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label for="meta" class="form-label">Meta</label>
+                                    <input type="text" class="form-control" id="meta" name="meta"
+                                           value="<?php echo $post->getMeta(); ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="url_slug" class="form-label">URL Slug</label>
+                                    <input type="text" class="form-control" id="url_slug" name="url_slug"
+                                           value="<?php echo $route->getUrl(); ?>">
+                                </div>
+                                <select class="form-control mb-3" name="template" required>
+                                    <option selected value="">Select a template</option>
+                                    <?php foreach ($templates as $index => $template): ?>
+                                        <option value="<?php echo $template->getUuid(); ?>" <?php echo $template->getUuid() == $post->getTemplateId() ? 'selected' : ''; ?>><?php echo $template->getFilename(); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <select class="form-control mb-3" name="status" required>
+                                    <option selected value="">Select a status</option>
+                                    <option value="0" <?php echo $post->getStatus() == Model_Post::STATUS_DRAFT ? 'selected' : ''; ?>>
+                                        Draft
+                                    </option>
+                                    <option value="1" <?php echo $post->getStatus() == Model_Post::STATUS_PUBLISHED ? 'selected' : ''; ?>>
+                                        Published
+                                    </option>
+                                    <option value="2" <?php echo $post->getStatus() == Model_Post::STATUS_DISABLED ? 'selected' : ''; ?>>
+                                        Disabled
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="css" class="form-label">CSS Styles</label>
+                                <textarea class="form-control locked" name="css" id="css"
+                                          rows="9"><?php echo $post->getCss(); ?></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
