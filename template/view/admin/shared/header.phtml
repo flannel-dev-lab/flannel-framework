@@ -61,12 +61,65 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <a href="/admin" class="nav-link active">
+                        <a href="/admin" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
                             </p>
                         </a>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-pencil-ruler"></i>
+                            <p>
+                                Theme Editor
+                                <i class="right fas fa-angle-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/admin/theme/header" class="nav-link">
+                                    <i class="far fa-heading nav-icon"></i>
+                                    <p>Theme Header</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/theme/footer" class="nav-link">
+                                    <i class="far fa-shoe-prints nav-icon"></i>
+                                    <p>Theme Footer</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/theme/mainindex" class="nav-link">
+                                    <i class="far fa-home nav-icon"></i>
+                                    <p>Main Index</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/theme/singlepost" class="nav-link">
+                                    <i class="far fa-clipboard nav-icon"></i>
+                                    <p>Single Post</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/theme/notfound" class="nav-link">
+                                    <i class="far fa-times-circle nav-icon"></i>
+                                    <p>404 Template</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/theme/stylesheet" class="nav-link">
+                                    <i class="fab fa-css3-alt nav-icon"></i>
+                                    <p>Stylesheet</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/theme/javascript" class="nav-link">
+                                    <i class="fab fa-js nav-icon"></i>
+                                    <p>JavaScript</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a href="/admin/auth/logout" class="nav-link">
@@ -82,27 +135,3 @@
         </div>
         <!-- /.sidebar -->
     </aside>
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Dashboard</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Dashboard v1</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
